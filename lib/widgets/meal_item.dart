@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:request_meal_app_flutter/models/Meal.dart';
 
 class MealItem extends StatelessWidget {
@@ -41,26 +40,21 @@ class MealItem extends StatelessWidget {
     }
   }
 
- /* selectMeal(BuildContext ctx)
+  selectMeal(BuildContext ctx)
   {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Navigator.push(ctx, new MaterialPageRoute(
-        builder: (ctx) => new MealDetailScreen(),
-        settings: RouteSettings(
-            arguments: id
-        ),
-      )
-      );
-    });
-
-  }*/
+    Navigator.of(ctx).pushNamed('MealDetailScreen',
+    arguments:
+        {
+          id
+        }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      //onTap: selectMeal(context),
+      onTap: ()=> selectMeal(context),
       child: Card(
-
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15)
         ),
