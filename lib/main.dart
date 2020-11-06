@@ -26,25 +26,46 @@ class _MyHomePageState extends State<MyHomePage> {
   };
 
     List<Meal> _availableMeals= DUMMY_MEALS;
+    List<Meal> _favoriteMeals= [];
 
-  void _setFilters(Map<String,bool> _filterData){
-    setState(() {
+    void _toggleFavorite(String mealId){
+
+      final existingIndex = _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+
+      if(existingIndex >=0)
+        {
+          setState(() {
+            _favoriteMeals.removeAt(existingIndex);
+          });
+        }else
+          {
+            setState(() {
+              _favoriteMeals.add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+            });
+          }
+    }
+
+    bool _isFavoriteMeal(String id){
+      return _favoriteMeals.any((meal) => meal.id == id);
+    }
+    void _setFilters(Map<String,bool> _filterData){
+      setState(() {
       _filters = _filterData;
 
       _availableMeals = DUMMY_MEALS.where((meal) {
 
         if(_filters['gluten'] && !meal.isGlutenFree){
           return false;
-        };
+        }
         if(_filters['lactose'] && !meal.isLactoseFree){
           return false;
-        };
+        }
         if(_filters['vegan'] && !meal.isVegan){
           return false;
-        };
+        }
         if(_filters['vegetarian'] && !meal.isVegetarian){
           return false;
-        };
+        }
         return true;
       }).toList();
     });
@@ -63,10 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
       home: MyHomePage(),
       initialRoute: '/',
       routes: {
-        '/': (context)=> TabsScreen(),
+        '/': (context)=> TabsScreen(_favoriteMeals),
         '/CategoryMealsScreen': (context)=> CategoryMealsScreen(_availableMeals),
         '/FiltersScreen' : (context)=> FiltersScreen(_filters,_setFilters),
-        '/MealDetailScreen' : (context) => MealDetailScreen()
+        '/MealDetailScreen' : (context) => MealDetailScreen(_toggleFavorite , _isFavoriteMeal)
       },
     );
   }
