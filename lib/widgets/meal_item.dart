@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:request_meal_app_flutter/models/Meal.dart';
+import 'package:request_meal_app_flutter/screens/meal_detail_screen.dart';
 
 class MealItem extends StatelessWidget {
 
@@ -9,7 +11,8 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-
+  final Function toggleFavorite ;
+  final Function isFavoriteMeal;
 
   MealItem({
      @required this.id,
@@ -17,10 +20,12 @@ class MealItem extends StatelessWidget {
      @required this.title,
      @required this.duration,
      @required this.complexity,
-     @required this.affordability
+     @required this.affordability,
+     @required this.toggleFavorite,
+     @required this.isFavoriteMeal
     });
 
-  String get comlexityText
+  String get complexityText
   {
     switch(complexity){
       case Complexity.Simple: return 'Simple'; break;
@@ -42,12 +47,16 @@ class MealItem extends StatelessWidget {
 
   selectMeal(BuildContext ctx)
   {
-    Navigator.of(ctx).pushNamed('MealDetailScreen',
-    arguments:
-        {
-          id
-        }
-    );
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Navigator.push(ctx, new MaterialPageRoute(
+        builder: (ctx) =>  MealDetailScreen(toggleFavorite , isFavoriteMeal),
+        settings: RouteSettings(
+            arguments: id
+        ),
+      )
+      );
+    });
+
   }
 
   @override
@@ -55,6 +64,7 @@ class MealItem extends StatelessWidget {
     return InkWell(
       onTap: ()=> selectMeal(context),
       child: Card(
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15)
         ),
@@ -105,7 +115,7 @@ class MealItem extends StatelessWidget {
                     children: [
                       Icon(Icons.work),
                       SizedBox(width: 6,),
-                      Text("$comlexityText")
+                      Text("$complexityText")
                     ],
                   ),
                   Row(

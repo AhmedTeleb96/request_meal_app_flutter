@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:request_meal_app_flutter/screens/filters_screen.dart';
 
 class MainDrawer extends StatelessWidget {
+
+  final Function saveFilters;
+  final Map<String,bool> currentFilters;
+
+  MainDrawer(this.currentFilters,this.saveFilters);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -39,7 +46,10 @@ class MainDrawer extends StatelessWidget {
                   fontWeight: FontWeight.bold
               ),
             ),
-            onTap: ()=> Navigator.of(context).pushNamed('/FiltersScreen'),
+            onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                  builder: (context) => new FiltersScreen(currentFilters, saveFilters)));
+            } ,
           )
         ],
       ),

@@ -7,9 +7,14 @@ import 'package:request_meal_app_flutter/widgets/main_drawer.dart';
 
 class TabsScreen extends StatefulWidget {
 
-  final List<Meal> _favoriteMeals;
+   final List<Meal> _favoriteMeals;
+   final List<Meal> _availableMeals;
+   final Function _toggleFavorite ;
+   final Function _isFavoriteMeal;
+   final Function saveFilters;
+   final Map<String,bool> currentFilters;
 
-  TabsScreen(this._favoriteMeals);
+  TabsScreen(this._favoriteMeals,this._availableMeals,this._toggleFavorite,this._isFavoriteMeal,this.currentFilters,this.saveFilters);
 
   @override
   _TabsScreenState createState() => _TabsScreenState();
@@ -25,11 +30,11 @@ class _TabsScreenState extends State<TabsScreen> {
      _pages =
      [
        {
-         'page' : CategoriesScreen(),
+         'page' : CategoriesScreen(widget._availableMeals,widget._toggleFavorite,widget._isFavoriteMeal),
          'title' : 'Categories'
        },
        {
-         'page' : FavoritesScreen(widget._favoriteMeals),
+         'page' : FavoritesScreen(widget._favoriteMeals,widget._toggleFavorite,widget._isFavoriteMeal),
          'title' : 'Your Favorites'
        }
      ];
@@ -67,7 +72,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
         ],
       ),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(widget.currentFilters,widget.saveFilters),
     );
   }
 

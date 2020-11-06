@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     bool _isFavoriteMeal(String id){
       return _favoriteMeals.any((meal) => meal.id == id);
     }
+
     void _setFilters(Map<String,bool> _filterData){
       setState(() {
       _filters = _filterData;
@@ -81,11 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
           primarySwatch : Colors.pink,
           canvasColor: Color.fromRGBO(255, 254, 229, 1)
       ),
-      home: MyHomePage(),
+
       initialRoute: '/',
       routes: {
-        '/': (context)=> TabsScreen(_favoriteMeals),
-        '/CategoryMealsScreen': (context)=> CategoryMealsScreen(_availableMeals),
+        '/': (context)=> TabsScreen(_favoriteMeals ,_availableMeals,_toggleFavorite,_isFavoriteMeal,_filters,_setFilters),
+        '/CategoryMealsScreen': (context)=> CategoryMealsScreen(_availableMeals,_toggleFavorite,_isFavoriteMeal),
         '/FiltersScreen' : (context)=> FiltersScreen(_filters,_setFilters),
         '/MealDetailScreen' : (context) => MealDetailScreen(_toggleFavorite , _isFavoriteMeal)
       },

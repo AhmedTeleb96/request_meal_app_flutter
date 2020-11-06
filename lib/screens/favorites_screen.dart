@@ -6,8 +6,10 @@ import 'package:request_meal_app_flutter/widgets/meal_item.dart';
 class FavoritesScreen extends StatelessWidget {
 
   final List<Meal> _favoriteMeals;
+  final Function _toggleFavorite ;
+  final Function _isFavoriteMeal;
 
-  FavoritesScreen(this._favoriteMeals);
+  FavoritesScreen(this._favoriteMeals,this._toggleFavorite,this._isFavoriteMeal);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,8 @@ class FavoritesScreen extends StatelessWidget {
               duration: _favoriteMeals[index].duration,
               complexity: _favoriteMeals[index].complexity,
               affordability: _favoriteMeals[index].affordability,
+                toggleFavorite: _toggleFavorite,
+                isFavoriteMeal : _isFavoriteMeal
             );
           },
           itemCount: _favoriteMeals.length,
